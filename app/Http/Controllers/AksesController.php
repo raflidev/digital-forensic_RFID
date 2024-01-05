@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use League\Csv\Writer;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use ZipArchive;
 
 class AksesController extends Controller
 {
@@ -53,9 +54,9 @@ class AksesController extends Controller
         $csv->insertOne(array_keys((array) $data->first()));
 
         // Add data rows
-        foreach ($data as $row) {
-            $csv->insertOne((array) $row);
-        }
+        // foreach ($data as $row) {
+        //     $csv->insertOne((array) $row);
+        // }
 
         $filename = 'data.csv';
         Storage::put('csv/' . $filename, $csv->getContent());
@@ -72,7 +73,16 @@ class AksesController extends Controller
             dd("File not found.");
         }
 
-        return Storage::download('csv/' . $hash.'.csv');
+        // return Storage::download('csv/' . $hash.'.csv');
+        // multiple storage download
+        $zipname = 'download-data.zip';
+        $zip = new \ZipArchive;
+        $zip->open($zipname, \ZipArchive::CREATE);
+        $zip->addFile('../storage/app/csv/'.$hash.'.csv', 'data.csv');
+        $zip->addFile('../storage/app/csv/'.$hash.'.csv', $hash);
+        $zip->close();
+        return response()->download($zipname);
+
     }
 
     /**

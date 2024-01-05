@@ -19,12 +19,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
@@ -33,8 +28,9 @@ Route::get('/dashboard', function () {
         ->join('door', 'door.door_id', '=', 'akses.door_id')
         ->select('akses.*', 'card.nama as nama_card', 'door.nama as nama_door')
         ->get();
+    $role = Auth::user()->name;
     // dd($data);
-    return Inertia::render('Dashboard', ['datas' => $data]);
+    return Inertia::render('Dashboard', ['datas' => $data, 'role' => $role]);
     // return Inertia::render('Dashboard', ['datas' => Akses::all()->map(function($akses){
     //     return [
     //         'id' => $akses->id,

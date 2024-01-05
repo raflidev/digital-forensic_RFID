@@ -6,10 +6,14 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        {{-- link css--}}
+        {{-- <link rel="stylesheet" href="{{ asset('/build/assets/app-502dc979.css') }}"> --}}
+        
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        
+        {{-- <link rel="stylesheet" href="{{ asset('/build/assets/app-502dc979.css') }}"> --}}
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
